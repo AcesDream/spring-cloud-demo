@@ -1,0 +1,50 @@
+spring: 
+  application: 
+    name: microservice-discovery-eureka-ha
+  profiles: 
+    active: peer2
+
+logging:
+ level:
+  root: INFO
+  
+user:
+  userServiceUrl: http://localhost:8000/    
+    
+---
+spring:
+  #指定profile=peer1
+  profiles: peer1
+
+server:
+  port: 8761
+
+#eureka server配置
+eureka: 
+  instance: 
+    # 当profile=peer1时，hostname是peer1
+    hostname: peer1
+  client: 
+    serviceUrl: 
+      # 将自己注册到peer2这个Eureka Server
+      defaultZone: http://peer2:8762/eureka/
+
+---
+spring:
+  #指定profile=peer2
+  profiles: peer2
+
+server:
+  port: 8762
+
+#eureka server配置
+eureka: 
+  instance: 
+    # 当profile=peer1时，hostname是peer1
+    hostname: peer2
+  client: 
+    serviceUrl: 
+      # 将自己注册到peer2这个Eureka Server
+      defaultZone: http://peer1:8761/eureka/
+
+

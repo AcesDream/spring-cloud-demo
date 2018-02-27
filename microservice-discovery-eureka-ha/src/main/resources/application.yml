@@ -2,7 +2,7 @@ spring:
   application: 
     name: microservice-discovery-eureka-ha
   profiles: 
-    active: peer2
+    active: peer1
 
 logging:
  level:

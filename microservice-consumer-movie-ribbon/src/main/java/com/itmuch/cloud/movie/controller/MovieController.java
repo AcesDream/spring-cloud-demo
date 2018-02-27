@@ -31,6 +31,7 @@ public class MovieController {
 		 * 注意：不能将restTemplate.getForObject(...)与loadBalancerClient.choose(...)写在同一个方法中
 		 * 两者之间会有冲突，因为此时restTemplate实际上是一个Ribbon客户端，本身已经包含了choose的行为
 		 */
+		//这里microservice-provider-user是虚拟主机名，虚拟主机名不能包含"_"之类的字符
 		User findOne = this.restTemplate.getForObject("http://microservice-provider-user/" + id, User.class);
 		
 		logger.info("根据id:{}，查询到的user：{}", id, findOne);

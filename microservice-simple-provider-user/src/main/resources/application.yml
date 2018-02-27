@@ -22,4 +22,14 @@ logging:
   root: INFO
   org.hibernate: INFO
   org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-  org.hibernate.type.descriptor.sql.BasicExtractor: TRACE    
+  org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+  
+#自定义actuator的监控信息  
+info:
+  app: @project.artifactId@
+  encoding: @project.build.sourceEncoding@
+  java:
+    version: @java.version@
+    source: @java.version@
+    target: @java.version@
+      

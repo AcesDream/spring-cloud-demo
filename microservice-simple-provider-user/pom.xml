@@ -37,6 +37,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
+		<!-- 添加actuator依赖，可以提供监控 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 	</dependencies>
 
 	<!-- 引入spring cloud依赖 -->

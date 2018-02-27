@@ -1,0 +1,110 @@
+server:
+  port: 8000
+
+#spring.application.name：指定注册到Eureka Server上的名称
+
+spring:
+  profiles: 
+    active: ignore
+  application: 
+    name: microservice-provider-user
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring-cloud-demo
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate: 
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+ 
+logging:
+ level:
+  root: INFO
+  org.hibernate: INFO
+  org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+
+
+#多网卡环境下IP的选择，下面定义了多个profile，对应以下四种情况
+#1.忽略指定名称网卡
+#2.使用正则表达式，指定使用的网络地址
+#3.只使用站点本地地址
+#4.手动指定IP
+
+---
+spring:
+  #忽略指定名称的网卡
+  profiles: ignore
+
+#忽略docker0以及所有以veth开头的网卡
+spring:
+  cloud:
+    inetutils:
+      ignored-interfaces:
+        - docker0
+        - veth.*
+   
+eureka: 
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true
+    
+---
+spring:
+  #使用正则表达式，指定使用的网络地址
+  profiles: prefer
+
+#使用匹配192.168和10.0的IP地址
+spring:
+  cloud:
+    inetutils:
+      preferredNetworks: 
+        - 192.168
+        - 10.0
+  
+eureka: 
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true
+    
+---
+spring:
+  #强制使用站点本地地址
+  profiles: useOnly
+
+#强制使用站点本地地址
+spring:
+  cloud:
+    inetutils:
+      useOnlySiteLocalInterface: true
+
+eureka: 
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true
+    
+    
+---
+spring:
+  #手动指定IP
+  profiles: staticIP
+
+#手动指定IP
+eureka: 
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: 127.0.0.1

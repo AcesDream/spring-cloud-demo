@@ -41,12 +41,12 @@ eureka:
     healthcheck: 
       enabled: true
     serviceUrl:
-      # defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
       #这样就可以把服务注册到高可用的Eureka Server上，
       #不过写一个地址也可以，因为Eureka Server之间会同步，建议把集群地址都写上
       #defaultZone: http://peer1:8761/eureka/,http://peer1:8761/eureka/
       
       #注册到带有认证功能的Eureka Server：http://user:password@eureka_host:eureka_port/eureka
-      defaultZone: http://user:password123@localhost:8761/eureka/
+      #defaultZone: http://user:password123@localhost:8761/eureka/
   instance: 
     prefer-ip-address: true

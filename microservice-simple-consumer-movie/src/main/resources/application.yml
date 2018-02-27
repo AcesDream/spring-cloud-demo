@@ -1,5 +1,9 @@
 server:
   port: 8010
+
 logging:
  level:
   root: INFO
+  
+user:
+  userServiceUrl: http://localhost:8000/

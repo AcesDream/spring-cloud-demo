@@ -1,0 +1,52 @@
+server:
+  port: 8000
+
+#spring.application.name：指定注册到Eureka Server上的名称
+
+spring:
+  application: 
+    name: microservice-provider-user
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring-cloud-demo
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate: 
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+ 
+logging:
+ level:
+  root: INFO
+  org.hibernate: INFO
+  org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+
+#eureka.instance.prefer-ip-address：表示将自己的IP注册到Eureka Server
+#如果不配置该属性，则表示注册微服务所在操作系统的hostname到Eureka Server
+
+#服务健康状态监控
+#如果Eureka Server和Eureka Client之间的心跳状态正常，那状态就是UP，但是这并不是说没有问题
+#如果Eureka Client连接不上数据源，此时心跳正常，微服务也是没法工作的
+#因此Actuator提供了/health端点，可以展示应用程序的健康信息，可以通过下面的设置，把这个信息传递给Eureka Server
+#eureka.client.healthcheck.enabled = true开启服务健康状态的传播
+eureka: 
+  client: 
+    healthcheck: 
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+      #这样就可以把服务注册到高可用的Eureka Server上，
+      #不过写一个地址也可以，因为Eureka Server之间会同步，建议把集群地址都写上
+      #defaultZone: http://peer1:8761/eureka/,http://peer1:8761/eureka/
+      
+      #注册到带有认证功能的Eureka Server：http://user:password@eureka_host:eureka_port/eureka
+      #defaultZone: http://user:password123@localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true

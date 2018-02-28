@@ -1,0 +1,37 @@
+server:
+  port: 8010
+
+#spring.application.name：指定注册到Eureka Server上的名称
+
+spring:
+  application: 
+    name: microservice-consumer-movie
+
+
+#eureka.instance.prefer-ip-address：表示将自己的IP注册到Eureka Server
+#如果不配置该属性，则表示注册微服务所在操作系统的hostname到Eureka Server     
+eureka: 
+  client: 
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true
+
+logging:
+ level:
+  root: INFO
+  
+user:
+  userServiceUrl: http://localhost:8000/
+
+#开启feign的压缩功能  
+feign: 
+  compression: 
+    request:
+      enabled: true
+      #支持的媒体类型列表
+      mime-types: text/xml,application/xml,application/json
+      #请求的最小阈值
+      min-request-size: 2048
+    response:
+      enabled: true

@@ -1,7 +1,9 @@
 server:
-  port: 8000
+  port: 8001
 
 spring:
+  application: 
+    name: microservice-provider-user
   datasource:
     url: jdbc:mysql://localhost:3306/spring-cloud-demo
     username: root

@@ -1,0 +1,29 @@
+server:
+  port: 8761
+
+logging:
+ level:
+  root: INFO
+
+#eureka server配置
+
+#registerWithEureka：表示是否将自己注册到Eureka Server，默认为true
+#fetchRegistry：表示是否从Eureka Server获取注册信息，默认是true。
+#因为这里是单节点，所以上面两个属性就设置为false
+#defaultZone：服务查询和注册使用的地址，多个地址可以使用,分割
+
+#自我保护模式是为了应对网络分区故障的
+#正常情况下，Eureka Server在一定的时间内如果没有收到某个微服务实例的心跳，Eureka Server将会注销该实例（默认90秒）
+#但是当网络分区故障时，即服务正常的，如果Eureka Server在短时间内丢失过多客户端时，自动进入自我保护模式，不会删除任何实例
+#可以通过eureka.server.enable-self-preservation=false关闭自我保护模式
+eureka: 
+  client: 
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  server: 
+    enable-self-preservation: false
+  
+user:
+  userServiceUrl: http://localhost:8000/

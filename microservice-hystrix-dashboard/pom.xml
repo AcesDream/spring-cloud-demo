@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.itmuch.cloud</groupId>
-	<artifactId>microservice-discovery-eureka</artifactId>
+	<artifactId>microservice-hystrix-dashboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>microservice-discovery-eureka</name>
+	<name>microservice-hystrix-dashboard</name>
 	<url>http://maven.apache.org</url>
 
 	<!-- 引入spring boot依赖 -->
@@ -34,10 +34,10 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		
-		<!-- 添加eureka依赖：服务发现组件 -->
+		<!-- 添加hystrix dashboard依赖：可视化监控数据 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka-server</artifactId>
+			<artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -12,7 +12,8 @@ import org.springframework.web.client.RestTemplate;
 /**
  * 断路器，需要在启动类上添加如下注解：
  * @EnableCircuitBreaker 或者  @EnableHystrix
- * 
+ * 可以查看hystrix的监控信息
+ * http://localhost:8010/hystrix.stream
  * 
  * @ClassName: ConsumerMovieApplication
  * @Description: TODO

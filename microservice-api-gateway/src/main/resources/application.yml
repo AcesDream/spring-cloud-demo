@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: microservice-api-gateway
+    
+server:
+  port: 8050
+
+logging:
+ level:
+  root: INFO
+
+#注册到 eureka server配置
+
+eureka: 
+  client: 
+    healthcheck: 
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true

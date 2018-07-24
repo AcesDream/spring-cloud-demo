@@ -113,3 +113,40 @@ management:
 #    microservice-provider-user: 
 #      path: /user/**
 #      strip-prefix: false
+
+#zuul的安全与header
+#一般来说，可在同一个系统中的服务之间共享Header，不过应尽量防止让一些敏感的Header外泄。
+#zuul: 
+#  routes: 
+#    microservice-provider-user: 
+#      path: /user/**
+#      #说明：敏感的header不会传播到下游去，也就是说此处的Cookie,Set-Cookie不会传播的其它的微服务中去
+#      sensitive-headers: Cookie,Set-Cookie,Authorization
+
+#可以通过zuul.sensitive-headers全局指定敏感header
+#zuul.routes.*.sensitive-headers的配置方式可以覆盖全局的配置
+#zuul: 
+#  sensitive-headers: Cookie,Set-Cookie,Authorization
+
+
+
+# 1、默认情况下zuul.ignored-headers是空的
+# 2、如果Spring Security在项目的classpath中，那么zuul.ignored-headers的默认值就是
+#     Pragma,Cache-Control,X-Frame-Options,X-Content-Type-Options,X-XSS-Protection,Expires，
+# 所以，当Spring Security在项目的classpath中，同时又需要使用下游微服务的Spring Security的Header时，
+# 可以将zuul.ignoreSecurity-Headers设置为false
+
+#可以使用zuul.ignored-headers属性丢弃一些Header，如：
+#zuul:
+#  routes:
+#    provide-user: 
+#     sensitive-headers: Cookie,Set-Cookie
+#  ignored-headers: Authorization
+  
+#说明：忽略的header不会传播到下游去，也就是说此处的Authorization不会传播的其它的微服务中去，
+#作用与上面敏感的Header差不多，事实上sensitive-headers会被添加到ignored-headers中。
+
+
+  
+
+

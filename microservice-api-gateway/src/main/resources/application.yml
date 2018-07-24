@@ -19,3 +19,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance: 
     prefer-ip-address: true
+
+#访问http://localhost:8050/routes，出现401，没有权限
+#关闭权限验证
+management: 
+  security: 
+    enabled: false

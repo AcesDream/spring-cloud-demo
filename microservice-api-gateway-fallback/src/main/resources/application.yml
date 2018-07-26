@@ -1,0 +1,152 @@
+spring:
+  application:
+    name: microservice-api-gateway
+    
+server:
+  port: 8050
+
+#将com.netflix包的日志级别设置为DEBUG，可以看到转发的细节
+logging:
+ level:
+  root: INFO
+  com.netflix: DEBUG
+
+#注册到 eureka server配置
+
+eureka: 
+  client: 
+    healthcheck: 
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance: 
+    prefer-ip-address: true
+
+#访问http://localhost:8050/routes，出现401，没有权限
+#关闭权限验证
+management: 
+  security: 
+    enabled: false
+    
+#zuul路由配置详解
+
+
+
+#1. 自定义微服务访问路径，定义microservice-provider-user微服务映射到/user/**路径，以下两种方式等同
+#zuul.routes.微服务的serviceId = 指定路径
+#http://localhost:8050/microservice-provider-user/1
+#http://localhost:8050/user/1
+#zuul:
+#  routes: 
+#    microservice-provider-user: /user/**
+
+#2. 忽略指定微服务
+#zuul.ignored-services: 忽略的服务，多个用逗号分隔开
+#zuul:
+#    ignored-services: microservice-provider-user
+
+#3. 忽略所有微服务，只路由指定的服务，是使用'*'，而不是*
+#zuul:
+#  ignored-services: '*'
+#  routes: 
+#    microservice-provider-user: /user/**
+
+#4. 同时指定微服务的id和对应的路径，和1的配置方式效果相同
+#zuul:
+#  routes:
+#    #user-route只是一个路由的名字
+#    user-route:      
+#      service-id: microservice-provider-user
+#      path: /user/**
+
+#5. 同时指定path和url，该方式不能使用ribbon来进行负载均衡
+#zuul:
+#  routes:
+#    #user-route只是一个路由的名字
+#    user-route:      
+#      url: http://localhost:8000 # 指定url
+#      path: /user/**             # url对应的路径 
+
+#6. 同时指定path和url，并且不破坏zuul的hystrix、Ribbon特性
+#zuul:
+#  routes:
+#    #user-route只是一个路由的名字，但是如果不配置service-id属性的话，user-route就是微服务的id
+#    user-route:      
+#      service-id: microservice-provider-user
+#      path: /user/**
+#ribbon: 
+#  eureka: 
+#    enabled: false # 为ribbon禁用eureka
+#microservice-provider-user: 
+#  ribbon: 
+#    listOfServers: localhost:8000,localhost8001
+
+#7. 忽略某些路径，这样可以将microservice-provider-user微服务映射到/user/**的路径，但是忽略该微服务中包含/admin/的路径
+#zuul:
+#  #忽略所有包含/admin/的路径
+#  ignoredPatterns: /**/admmin/** 
+#  routes: 
+#    microservice-provider-user: /user/**
+
+
+#设置 zuul.prefix 可以为所有的匹配增加前缀, 例如 /api,代理前缀默认会从请求路径中移除(通过 zuul.stripPrefix=false 可以关闭这个功能).
+#8. 添加路由前缀，这种配置方式，多了前缀/api，访问路径如下：
+#http://localhost:8050/api/user/1，请求会转发到http://localhost:8000/1
+#zuul: 
+#  prefix: /api
+#  routes: 
+#    microservice-provider-user: /user/**
+
+#8.1 添加路由前缀，这种配置方式，默认情况会去掉/api，设置strip-prefix: false可以关闭此功能，即不去掉前缀
+#http://localhost:8050/api/user/1，请求会转发到http://localhost:8000/api/1
+#zuul: 
+#  prefix: /api
+#  strip-prefix: false
+#  routes: 
+#    microservice-provider-user: /user/**
+
+#8.2 添加路由前缀，这种配置方式，默认情况会去掉/api，设置strip-prefix: false可以关闭此功能，即不去掉前缀
+#这种情况的配置，/user也是前缀
+#http://localhost:8050/user/1，请求会转发到http://localhost:8000/user/1
+#zuul: 
+#  routes: 
+#    microservice-provider-user: 
+#      path: /user/**
+#      strip-prefix: false
+
+#zuul的安全与header
+#一般来说，可在同一个系统中的服务之间共享Header，不过应尽量防止让一些敏感的Header外泄。
+#zuul: 
+#  routes: 
+#    microservice-provider-user: 
+#      path: /user/**
+#      #说明：敏感的header不会传播到下游去，也就是说此处的Cookie,Set-Cookie不会传播的其它的微服务中去
+#      sensitive-headers: Cookie,Set-Cookie,Authorization
+
+#可以通过zuul.sensitive-headers全局指定敏感header
+#zuul.routes.*.sensitive-headers的配置方式可以覆盖全局的配置
+#zuul: 
+#  sensitive-headers: Cookie,Set-Cookie,Authorization
+
+
+
+# 1、默认情况下zuul.ignored-headers是空的
+# 2、如果Spring Security在项目的classpath中，那么zuul.ignored-headers的默认值就是
+#     Pragma,Cache-Control,X-Frame-Options,X-Content-Type-Options,X-XSS-Protection,Expires，
+# 所以，当Spring Security在项目的classpath中，同时又需要使用下游微服务的Spring Security的Header时，
+# 可以将zuul.ignoreSecurity-Headers设置为false
+
+#可以使用zuul.ignored-headers属性丢弃一些Header，如：
+#zuul:
+#  routes:
+#    provide-user: 
+#     sensitive-headers: Cookie,Set-Cookie
+#  ignored-headers: Authorization
+  
+#说明：忽略的header不会传播到下游去，也就是说此处的Authorization不会传播的其它的微服务中去，
+#作用与上面敏感的Header差不多，事实上sensitive-headers会被添加到ignored-headers中。
+
+
+  
+
+

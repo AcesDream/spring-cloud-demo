@@ -1,0 +1,20 @@
+#config server的端点：
+#/{application}/{profile}[/{label}]
+#/{application}-{profile}.yml，这种情况下是获取default-label中的配置文件
+#/{application}-{profile}.properties
+#/{label}/{application}-{profile}.yml
+#/{label}/{application}-{profile}.properties
+
+spring: 
+  profile: 
+    active: test
+  application:
+    # 所需获取配置文件的{application}
+    name: microservice-foo
+  cloud: 
+    config: 
+      uri: http://localhost:8080/
+      # 所需获取配置文件的{profile}
+      profile: test
+      # 所需获取配置文件的{label}
+      label: v2.0 

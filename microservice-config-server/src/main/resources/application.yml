@@ -1,0 +1,38 @@
+#config server的端点：
+#/{application}/{profile}[/{label}]
+#/{application}-{profile}.yml，这种情况下是获取default-label中的配置文件
+#/{application}-{profile}.properties
+#/{label}/{application}-{profile}.yml
+#/{label}/{application}-{profile}.properties
+
+
+# 如果不设置这个，则是以git为配置文件存储
+#spring.profiles.active=subversion
+spring:
+  application:
+    name: microservice-config-server
+  cloud: 
+    config: 
+      server: 
+        svn: 
+          uri: https://192.168.9.50/svn/cloudconfig/config
+          username: lxy
+          password: 123456
+        default-label: v1.0 #以上面的uri为根路径，如果不设置default-label，svn默认为trunk，git默认为master
+  profiles: 
+    active: subversion # 如果不设置这个，则是以git为配置文件存储
+server:
+  port: 8080
+
+#将com.netflix包的日志级别设置为DEBUG，可以看到转发的细节
+logging:
+ level:
+  root: INFO
+  org.springframework.boot.env.PropertySourcesLoader: TRACE
+  org.springframework.cloud.config.server: DEBUG
+
+
+
+  
+
+

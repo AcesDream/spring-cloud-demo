@@ -16,8 +16,8 @@ spring:
       server: 
         svn: 
           uri: https://192.168.9.50/svn/cloudconfig/config
-          username: lxy
-          password: 123456
+          username: your userName
+          password: your password
         default-label: v1.0 #以上面的uri为根路径，如果不设置default-label，svn默认为trunk，git默认为master
   profiles: 
     active: subversion # 如果不设置这个，则是以git为配置文件存储
@@ -30,9 +30,4 @@ logging:
   root: INFO
   org.springframework.boot.env.PropertySourcesLoader: TRACE
   org.springframework.cloud.config.server: DEBUG
-
-
-
-  
-
 

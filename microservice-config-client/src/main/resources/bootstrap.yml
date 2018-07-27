@@ -5,6 +5,14 @@
 #/{label}/{application}-{profile}.yml
 #/{label}/{application}-{profile}.properties
 
+
+#spring.application.name：对应{application}
+#spring.application.profile：对应{profile}
+#spring.application.label：对应{label}
+#spring.application.url：对应config server的地址，默认是http://localhost:8888
+
+#spring.cloud.bootstrap.enabled=false
+
 spring: 
   profile: 
     active: test
